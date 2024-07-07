@@ -29,7 +29,7 @@ case ${1} in
     ;;
 esac
 
-while [[ true ]] do
+while true; do
     clear
     cpu_temp=$(expr $(cat $k10temp_node) / 1000)
     gpu_temp=$(expr $(cat $amdgpu_node) / 1000)

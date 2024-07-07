@@ -1,5 +1,5 @@
 # How to use
 
 ```sh
-sudo bash script.sh
+bash script.sh
 ```

@@ -1,6 +1,6 @@
 
 # find all thermal node and consider as array.
-thermal_node=$(find /sys -name temp1_input)
+thermal_node=$(find /sys -name temp1_input 2> /dev/null)
 thermal_node=(${thermal_node// / })
 k10temp_node=""
 amdgpu_node=""

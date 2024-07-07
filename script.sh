@@ -18,10 +18,33 @@ do
     fi
 done
 
+notify_sended=false
+notify_allow=false
+
+case ${1} in
+    "--notify")
+        notify_allow=true
+    ;;
+    *)
+    ;;
+esac
+
 while [[ true ]] do
     clear
-    echo "CPU temperature: $(expr $(cat $k10temp_node) / 1000) °C"
-    echo "GPU temperature: $(expr $(cat $amdgpu_node) / 1000) °C"
+    cpu_temp=$(expr $(cat $k10temp_node) / 1000)
+    gpu_temp=$(expr $(cat $amdgpu_node) / 1000)
+    echo "CPU temperature: $cpu_temp °C"
+    echo "GPU temperature: $gpu_temp °C"
+
+    if [ "$notify_allow" = true ]; then
+        if [ 70 -lt "$cpu_temp" ] && [ "$notify_sended" = false ]; then
+            notify-send "CPU Temp to high: $cpu_temp"
+            notify_sended=true
+        elif [ "$cpu_temp" -lt 60 ] && [ "$notify_sended" = true ]; then
+            notify_sended=false
+            notify-send "CPU back to normal temp: $cpu_temp"
+        fi
+    fi
 
     # exit when press some keys and not print char.
     # this work also as sleep 1 ("-t 1")
